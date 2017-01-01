@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>grep命令速查</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="github-markdown.css" type="text/css" />
+  <style>
+    .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+    }
+  </style>
+</head>
+<body>
+<article class="markdown-body">
+<blockquote>
+<p>参考《鸟哥的Linux私房菜》</p>
+</blockquote>
+<h1 id="基础">基础</h1>
+<p><code>grep [-acinv] [--color=auto] '搜索字符串' filename</code></p>
+<ul>
+<li>-a：将 binary 档案以 text 档案的方式搜寻数据</li>
+<li>-c：计算找到 '搜寻字符串' 的次数</li>
+<li>-i：忽略大小写的不同，所以大小写视为相同</li>
+<li>-n：顺便输出行号</li>
+<li>-v：反向选择，亦即显示出没有 '搜寻字符串' 内容的那一行</li>
+<li>--color=auto：可以将找到的关键词部分加上颜色的显示</li>
+</ul>
+<h2 id="例子">例子</h2>
+<ul>
+<li><code>grep -n 'the' filename.log</code><br />
+在 filename.log 文件中搜寻 'the' 字符串，并输出行号</li>
+</ul>
+<h1 id="进阶">进阶</h1>
+<p><code>grep [-A] [-B] [--color=auto] '搜寻字符串' filename</code></p>
+<ul>
+<li>-A：后面可加数字，为 after 的意思，除了列出该行外，后续的 n 行也列出来</li>
+<li>-B：后面可加数字，为 before 的意思，除了列出该行外，前面的 n 行也列出来</li>
+</ul>
+<h2 id="例子-1">例子</h2>
+<ul>
+<li><code>dmesg | grep -n -A3 -B2 'eth'</code><br />
+用 dmesg 列出核心讯息，再以 grep 找出内含 eth 的行，在关键词所在行的前两行与后三行也一起提出来显示</li>
+</ul>
+<h1 id="grep-结合正则表达式">grep 结合正则表达式</h1>
+<ul>
+<li><p><code>grep -n 't[ae]st' filename.log</code><br />
+在 filename.log 文件中搜寻 test 或 tast 这两个单字</p></li>
+<li><p><code>grep -n '[^g]oo' filename.log</code><br />
+在 filename.log 文件中搜寻 oo 字符串，并且 oo 前面不能是 g</p></li>
+<li><p><code>grep -n '^the' filename.log</code><br />
+在 filename.log 文件中搜寻 the 字符串，并且 the 字符串出现在行首</p></li>
+<li><p><code>grep -n '^$' filename.log</code><br />
+在 filename.log 文件中搜寻空行</p></li>
+<li><p><code>grep -n 'o\{2\}' filename.log</code><br />
+在 filename.log 文件中搜寻含有 oo（即两个o） 字符串的行</p></li>
+<li><p><code>grep -n 'o\{2,5\}' filename.log</code><br />
+在 filename.log 文件中搜寻含有 2 到 5 个连续 o 字符的行</p></li>
+<li><p><code>grep -n 'o\{2,}' filename.log</code><br />
+在 filename.log 文件中搜寻含有 2 个或 2 个以上连续 o 字符的行</p></li>
+</ul>
+</article>
+</body>
+</html>
