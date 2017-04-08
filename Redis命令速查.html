@@ -1,0 +1,297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>grep命令速查</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="github-markdown.css" type="text/css" />
+  <style>
+    .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+    }
+  </style>
+</head>
+<body>
+<article class="markdown-body">
+<blockquote>
+<p>参考：<a href="http://www.runoob.com/redis/redis-tutorial.html">Redis 教程 | 菜鸟教程</a><br />
+<a href="http://redis.cn/commands.html">Redis命令中心 -- Redis中国用户组</a></p>
+</blockquote>
+<h1 id="ubuntu-下安装">Ubuntu 下安装</h1>
+<p><code>sudo apt install redis-server</code></p>
+<h1 id="命令行登录-redis">命令行登录 Redis</h1>
+<h3 id="本地连接">本地连接</h3>
+<ul>
+<li><p>无密码：<code>redis-cli</code></p></li>
+<li><p>有密码：<code>redis-cli -a 密码</code></p></li>
+<li><p>若登录有密码的 redis 服务器时没有提供密码，则后续操作需要通过 AUTH 命令进行密码验证：<code>127.0.0.1:6379&gt; AUTH 密码</code></p></li>
+</ul>
+<h3 id="远程连接">远程连接</h3>
+<ul>
+<li><p><code>redis-cli -h host -p port -a password</code></p></li>
+<li><p><code>redis-cli -h 127.0.0.1 -p 6379 -a &quot;mypass&quot;</code></p></li>
+</ul>
+<h1 id="redis-配置">Redis 配置</h1>
+<blockquote>
+<p>Redis 的配置文件位于 Redis 安装目录下，文件名为 redis.conf</p>
+</blockquote>
+<p><code>/etc/redis/redis.conf</code></p>
+<blockquote>
+<p>可以通过 CONFIG 命令查看或设置配置项<br />
+也可以通过修改 redis.conf 文件修改配置项</p>
+</blockquote>
+<h3 id="查看配置">查看配置</h3>
+<ul>
+<li><p><code>127.0.0.1:6379&gt; CONFIG GET CONFIG_SETTING_NAME</code></p></li>
+<li><p><code>127.0.0.1:6379&gt; CONFIG GET loglevel</code></p></li>
+<li><p>获取所有配置项：<code>127.0.0.1:6379&gt; CONFIG GET *</code></p></li>
+</ul>
+<h3 id="修改配置">修改配置</h3>
+<ul>
+<li><p><code>127.0.0.1:6379&gt; CONFIG SET CONFIG_SETTING_NAME NEW_CONFIG_VALUE</code></p></li>
+<li><p><code>127.0.0.1:6379&gt; CONFIG SET loglevel &quot;notice&quot;</code></p></li>
+</ul>
+<h1 id="redis-keys-相关命令">Redis keys 相关命令</h1>
+<ul>
+<li><p><code>KEYS pattern</code><br />
+查找所有符合给定模式的 key</p>
+<p>例：<code>KEYS *</code>(查看所有的 key)</p></li>
+<li><p><code>EXISTS key</code><br />
+检查给定 key 是否存在</p></li>
+<li><p><code>DEL key</code><br />
+在 key 存在时删除 key</p></li>
+<li><p><code>TYPE key</code><br />
+返回 key 所储存的值的类型</p></li>
+<li><p><code>EXPIRE key seconds</code><br />
+为给定 key 设置过期时间</p></li>
+<li><p><code>PERSIST key</code><br />
+移除 key 的过期时间，key 将持久保持</p></li>
+<li><p><code>TTL key</code><br />
+以秒为单位，返回给定 key 的剩余生存时间(TTL, time to live)</p></li>
+<li><p><code>RENAME key new_key</code><br />
+修改 key 的名称</p></li>
+<li><p><code>RENAMENX key new_key</code><br />
+仅当 newkey 不存在时，将 key 改名为 newkey</p></li>
+</ul>
+<h1 id="redis-字符串类型相关命令">Redis 字符串类型相关命令</h1>
+<ul>
+<li><p><code>GET key</code><br />
+获取指定 key 的值</p></li>
+<li><p><code>SET key value</code><br />
+设置指定 key 的值</p></li>
+<li><p><code>GETRANGE key start end</code><br />
+返回 key 中字符串值的子字符</p></li>
+<li><p><code>GETSET key value</code><br />
+将给定 key 的值设为 value ，并返回 key 的旧值</p></li>
+<li><p><code>MGET key1 [key2..]</code><br />
+获取所有(一个或多个)给定 key 的值</p></li>
+<li><p><code>MSET key value [key value ...]</code><br />
+同时设置一个或多个 key-value 对</p></li>
+<li><p><code>SETEX key seconds value</code><br />
+将值 value 关联到 key ，并将 key 的过期时间设为 seconds (以秒为单位)</p></li>
+<li><p><code>SETNX key value</code><br />
+只有在 key 不存在时设置 key 的值</p></li>
+<li><p><code>MSETNX key value [key value ...]</code><br />
+同时设置一个或多个 key-value 对，当且仅当所有给定 key 都不存在</p></li>
+<li><p><code>STRLEN key</code><br />
+返回 key 所储存的字符串值的长度</p></li>
+<li><p><code>INCR key</code><br />
+将 key 中储存的数字值增一</p></li>
+<li><p><code>DECR key</code><br />
+将 key 中储存的数字值减一</p></li>
+<li><p><code>INCRBY key increment</code><br />
+将 key 所储存的值加上给定的增量值</p></li>
+<li><p><code>DECRBY key decrement</code><br />
+key 所储存的值减去给定的减量值</p></li>
+<li><p><code>INCRBYFLOAT key increment</code><br />
+将 key 所储存的值加上给定的浮点增量值</p></li>
+<li><p><code>APPEND key value</code><br />
+如果 key 已经存在并且是一个字符串， APPEND 命令将 value 追加到 key 原来的值的末尾</p></li>
+</ul>
+<h1 id="redis-字典哈希类型相关命令">Redis 字典(哈希)类型相关命令</h1>
+<ul>
+<li><p><code>HMSET key field1 value1 [field2 value2 ]</code><br />
+同时将多个 field-value (域-值)对设置到哈希表 key 中</p>
+<p>例：<code>127.0.0.1:6379&gt;  HMSET myinfo name &quot;lijiac&quot; address &quot;Guangzhou&quot; age 26</code></p></li>
+<li><p><code>HMGET key field1 [field2]</code><br />
+获取所有给定字段的值</p></li>
+<li><p><code>HGETALL key</code><br />
+获取在哈希表中指定 key 的所有字段和值</p></li>
+<li><p><code>HKEYS key</code><br />
+获取所有哈希表中的字段</p></li>
+<li><p><code>HVALS key</code><br />
+获取哈希表中所有值</p></li>
+<li><p><code>HSET key field value</code><br />
+将哈希表 key 中的字段 field 的值设为 value</p></li>
+<li><p><code>HGET key field</code><br />
+获取存储在哈希表中指定字段的值</p></li>
+<li><p><code>HLEN key</code><br />
+获取哈希表中字段的数量</p></li>
+<li><p><code>HEXISTS key field</code><br />
+查看哈希表 key 中，指定的字段是否存在</p></li>
+<li><p><code>HDEL key field2 [field2]</code><br />
+删除一个或多个哈希表字段</p></li>
+<li><p><code>HINCRBY key field increment</code><br />
+为哈希表 key 中的指定字段的整数值加上增量 increment</p></li>
+<li><p><code>HINCRBYFLOAT key field increment</code><br />
+为哈希表 key 中的指定字段的浮点数值加上增量 increment</p></li>
+<li><p><code>HSETNX key field value</code><br />
+只有在字段 field 不存在时，设置哈希表字段的值</p></li>
+<li><p><code>HSCAN key cursor [MATCH pattern] [COUNT count]</code><br />
+迭代哈希表中的键值对</p></li>
+</ul>
+<h1 id="redis-列表类型相关命令">Redis 列表类型相关命令</h1>
+<ul>
+<li><p><code>RPUSH key value1 [value2]</code><br />
+在列表中添加一个或多个值</p></li>
+<li><p><code>LPOP key</code><br />
+移出并获取列表的第一个元素</p></li>
+<li><p><code>LLEN key</code><br />
+获取列表长度</p></li>
+<li><p><code>LINDEX key index</code><br />
+通过索引获取列表中的元素</p></li>
+<li><p><code>LSET key index value</code><br />
+通过索引设置列表元素的值</p></li>
+<li><p><code>LINSERT key BEFORE|AFTER pivot value</code><br />
+在列表的元素前或者后插入元素</p></li>
+<li><p><code>LPUSH key value1 [value2]</code><br />
+将一个或多个值插入到列表头部</p></li>
+<li><p><code>LPUSHX key value</code><br />
+将一个或多个值插入到已存在的列表头部</p></li>
+<li><p><code>RPUSHX key value</code><br />
+为已存在的列表添加值</p></li>
+<li><p><code>RPOP key</code><br />
+移除并获取列表最后一个元素</p></li>
+<li><p><code>BLPOP key1 [key2 ] timeout</code><br />
+移出并获取列表的第一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止</p></li>
+<li><p><code>BRPOP key1 [key2 ] timeout</code><br />
+移出并获取列表的最后一个元素， 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止</p></li>
+<li><p><code>RPOPLPUSH source destination</code><br />
+移除列表的最后一个元素，并将该元素添加到另一个列表并返回</p></li>
+<li><p><code>BRPOPLPUSH source destination timeout</code><br />
+从列表中弹出一个值，将弹出的元素插入到另外一个列表中并返回它； 如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止</p></li>
+<li><p><code>LRANGE key start stop</code><br />
+获取列表指定范围内的元素</p></li>
+<li><p><code>LTRIM key start stop</code><br />
+对一个列表进行修剪(trim)，就是说，让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除。</p></li>
+<li><p><code>LREM key count value</code><br />
+从存于 key 的列表里移除前 count 次出现的值为 value 的元素</p>
+<ul>
+<li>count &gt; 0: 从头往尾移除值为 value 的元素。</li>
+<li>count &lt; 0: 从尾往头移除值为 value 的元素。</li>
+<li>count = 0: 移除所有值为 value 的元素。</li>
+</ul></li>
+</ul>
+<h1 id="redis-集合类型相关命令">Redis 集合类型相关命令</h1>
+<ul>
+<li><p><code>SADD key member1 [member2]</code><br />
+向集合添加一个或多个成员</p></li>
+<li><p><code>SREM key member1 [member2]</code><br />
+移除集合中一个或多个成员</p></li>
+<li><p><code>SPOP key</code><br />
+移除并返回集合中的一个随机元素</p></li>
+<li><p><code>SISMEMBER key member</code><br />
+判断 member 元素是否是集合 key 的成员</p></li>
+<li><p><code>SMEMBERS key</code><br />
+返回集合中的所有成员</p></li>
+<li><p><code>SCARD key</code><br />
+获取集合的成员数</p></li>
+<li><p><code>SINTER key1 [key2]</code><br />
+返回给定所有集合的交集</p></li>
+<li><p><code>SUNION key1 [key2]</code><br />
+返回所有给定集合的并集</p></li>
+<li><p><code>SDIFF key1 [key2]</code><br />
+返回给定所有集合的差集</p></li>
+<li><p><code>SINTERSTORE destination key1 [key2]</code><br />
+返回给定所有集合的交集并存储在 destination 中</p></li>
+<li><p><code>SUNIONSTORE destination key1 [key2]</code><br />
+所有给定集合的并集存储在 destination 集合中</p></li>
+<li><p><code>SDIFFSTORE destination key1 [key2]</code><br />
+返回给定所有集合的差集并存储在 destination 中</p></li>
+<li><p><code>SMOVE source destination member</code><br />
+将 member 元素从 source 集合移动到 destination 集合</p></li>
+<li><p><code>SRANDMEMBER key [count]</code><br />
+返回集合中一个或多个随机元素</p></li>
+<li><p><code>SSCAN key cursor [MATCH pattern] [COUNT count]</code><br />
+迭代集合中的元素</p></li>
+</ul>
+<h1 id="redis-有序集合类型相关命令">Redis 有序集合类型相关命令</h1>
+<ul>
+<li><p><code>ZADD key score1 member1 [score2 member2]</code><br />
+向有序集合添加一个或多个成员，或者更新已存在成员的分数</p></li>
+<li><p><code>ZSCORE key member</code><br />
+返回有序集中，成员的分数值</p></li>
+<li><p><code>ZRANK key member</code><br />
+返回有序集合中指定成员的索引</p></li>
+<li><p><code>ZCARD key</code><br />
+获取有序集合的成员数</p></li>
+<li><p><code>ZCOUNT key min max</code><br />
+计算在有序集合中指定区间分数的成员数</p></li>
+<li><p><code>ZLEXCOUNT key min max</code><br />
+用于计算有序集合中指定成员之间的成员数量</p></li>
+<li><p><code>ZINCRBY key increment member</code><br />
+有序集合中对指定成员的分数加上增量 increment</p></li>
+<li><p><code>ZRANGE key start stop [WITHSCORES]</code><br />
+通过索引区间返回有序集合中指定区间内的成员</p></li>
+<li><p><code>ZRANGEBYLEX key min max [LIMIT offset count]</code><br />
+通过字典区间返回有序集合的成员</p></li>
+<li><p><code>ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT]</code><br />
+通过分数返回有序集合指定区间内的成员</p></li>
+<li><p><code>ZREM key member [member ...]</code><br />
+移除有序集合中的一个或多个成员</p></li>
+<li><p><code>ZREMRANGEBYLEX key min max</code><br />
+移除有序集合中给定的字典区间的所有成员</p></li>
+<li><p><code>ZREMRANGEBYRANK key start stop</code><br />
+移除有序集合中给定的排名区间的所有成员</p></li>
+<li><p><code>ZREMRANGEBYSCORE key min max</code><br />
+移除有序集合中给定的分数区间的所有成员</p></li>
+<li><p><code>ZREVRANGE key start stop [WITHSCORES]</code><br />
+返回有序集中指定区间内的成员，通过索引，分数从高到底</p></li>
+<li><p><code>ZREVRANGEBYSCORE key max min [WITHSCORES]</code><br />
+返回有序集中指定分数区间内的成员，分数从高到低排序</p></li>
+<li><p><code>ZREVRANK key member</code><br />
+返回有序集合中指定成员的排名，有序集成员按分数值递减(从大到小)排序</p></li>
+<li><p><code>ZINTERSTORE destination numkeys key [key ...]</code><br />
+计算给定的 numkeys 个有序集合的交集，并且把结果放到 destination 中</p></li>
+<li><p><code>ZUNIONSTORE destination numkeys key [key ...]</code><br />
+计算给定的 numkeys 个有序集合的并集，并且把结果放到 destination 中</p></li>
+<li><p><code>ZSCAN key cursor [MATCH pattern] [COUNT count]</code><br />
+迭代有序集合中的元素（包括元素成员和元素分值）</p></li>
+</ul>
+<h1 id="redis-发布订阅命令">Redis 发布订阅命令</h1>
+<ul>
+<li><p><code>PUBLISH channel message</code><br />
+将信息发送到指定的频道</p></li>
+<li><p><code>SUBSCRIBE channel [channel ...]</code><br />
+订阅给定的一个或多个频道的信息</p></li>
+<li><p><code>UNSUBSCRIBE [channel [channel ...]]</code><br />
+退订给定的频道</p></li>
+<li><p><code>PSUBSCRIBE pattern [pattern ...]</code><br />
+订阅一个或多个符合给定模式的频道</p></li>
+<li><p><code>PUNSUBSCRIBE [pattern [pattern ...]]</code><br />
+退订所有给定模式的频道</p></li>
+<li><p><code>PUBSUB subcommand [argument [argument ...]]</code><br />
+查看订阅与发布系统状态</p></li>
+<li><p><code>PUBSUB CHANNELS [pattern]</code><br />
+Lists the currently active channels</p></li>
+<li><p><code>PUBSUB NUMSUB [channel-1 ... channel-N]</code><br />
+Returns the number of subscribers (not counting clients subscribed to patterns) for the specified channels</p></li>
+<li><p><code>PUBSUB NUMPAT</code><br />
+Returns the number of subscriptions to patterns (that are performed using the PSUBSCRIBE command). Note that this is not just the count of clients subscribed to patterns but the total number of patterns all the clients are subscribed to</p></li>
+</ul>
+<h1 id="redis-查看设置密码">Redis 查看／设置密码</h1>
+<ul>
+<li><p><code>127.0.0.1:6379&gt; CONFIG get requirepass</code></p></li>
+<li><p><code>127.0.0.1:6379&gt; CONFIG set requirepass &quot;密码&quot;</code></p></li>
+</ul>
+</article>
+</body>
+</html>
